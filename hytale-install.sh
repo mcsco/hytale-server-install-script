@@ -21,7 +21,7 @@ echo -e ""
 echo -e "${GREEN}${BOLD}=============================================${NC}"
 echo -e "${GREEN}${BOLD}      Hytale Server Installation Script     ${NC}"
 echo -e "${GREEN}${BOLD}         Created by: Michael (mcsco)        ${NC}"
-echo -e "${GREEN}${BOLD}                 Version: 5                 ${NC}"
+echo -e "${GREEN}${BOLD}                 Version: 6                 ${NC}"
 echo -e "${GREEN}${BOLD}              Updated: 2026-03-29           ${NC}"
 echo -e "${GREEN}${BOLD}=============================================${NC}"
 echo -e ""
@@ -79,21 +79,32 @@ if [[ ! -f "$INSTALL_DIR/Assets.zip" ]]; then
 fi
 
 # Writing Hytale start script
-cat > "$INSTALL_DIR/start-hytale.sh" <<EOF
-#!/usr/bin/env bash
-set -euo pipefail
-cd "$INSTALL_DIR"
-exec java -XX:AOTCache=$INSTALL_DIR/Server/HytaleServer.aot -jar $INSTALL_DIR/Server/HytaleServer.jar --assets $INSTALL_DIR/Assets.zip
+#cat > "$INSTALL_DIR/start-hytale.sh" <<EOF
+##!/usr/bin/env bash
+#set -euo pipefail
+#cd "$INSTALL_DIR"
+#exec java -XX:AOTCache=$INSTALL_DIR/Server/HytaleServer.aot -jar $INSTALL_DIR/Server/HytaleServer.jar --assets $INSTALL_DIR/Assets.zip
+#EOF
+
+# Creating jvm.options with custom jvm options
+cat > "$INSTALL_DIR/jvm.options" <<EOF
+-Xms4G
+-Xmx8G
+-XX:+UseG1GC
+-XX:AOTCache=Server/HytaleServer.aot
 EOF
 
 # Enabling script execution permission
-chmod +x $INSTALL_DIR/start-hytale.sh
+#chmod +x $INSTALL_DIR/start-hytale.sh
+
+# Enabling execution permission official Hytal Start.sh script
+chmod +x $INSTALL_DIR/start.sh
 
 # Checking if start script was created before enabling hytale service
-if [[ ! -x "$INSTALL_DIR/start-hytale.sh" ]]; then
-  echo "Error: start script is missing or not executable" >&2
-  exit 1
-fi
+#if [[ ! -x "$INSTALL_DIR/start-hytale.sh" ]]; then
+#  echo "Error: start script is missing or not executable" >&2
+#  exit 1
+#fi
 
 # Writing Hytale Systemd Service
 sudo tee /etc/systemd/system/hytale.service > /dev/null <<EOF
@@ -109,13 +120,13 @@ User=$RUN_USER
 Group=$RUN_GROUP
 WorkingDirectory=$INSTALL_DIR
 
-ExecStart=/usr/bin/tmux new-session -d -s hytale '$INSTALL_DIR/start-hytale.sh'
+ExecStart=/usr/bin/tmux new-session -d -s hytale './start.sh'
 ExecStop=/usr/bin/tmux send-keys -t hytale 'stop' C-m
 ExecStop=/bin/sleep 10
 ExecStopPost=/usr/bin/tmux kill-session -t hytale
 
 TimeoutStartSec=30
-TimeoutStopSec=30
+TimeoutStopSec=60
 
 [Install]
 WantedBy=multi-user.target
