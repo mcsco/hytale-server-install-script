@@ -148,7 +148,8 @@ Contents:
 /opt/hytale-server
 ├── Server/
 ├── Assets.zip
-├── start-hytale.sh
+├── start.sh
+├── jvm.options
 ```
 
 ------------------------------------------------------------------------
