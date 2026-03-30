@@ -78,14 +78,6 @@ if [[ ! -f "$INSTALL_DIR/Assets.zip" ]]; then
   exit 1
 fi
 
-# Writing Hytale start script
-#cat > "$INSTALL_DIR/start-hytale.sh" <<EOF
-##!/usr/bin/env bash
-#set -euo pipefail
-#cd "$INSTALL_DIR"
-#exec java -XX:AOTCache=$INSTALL_DIR/Server/HytaleServer.aot -jar $INSTALL_DIR/Server/HytaleServer.jar --assets $INSTALL_DIR/Assets.zip
-#EOF
-
 # Creating jvm.options with custom jvm options
 cat > "$INSTALL_DIR/jvm.options" <<EOF
 -Xms4G
@@ -94,17 +86,8 @@ cat > "$INSTALL_DIR/jvm.options" <<EOF
 -XX:AOTCache=Server/HytaleServer.aot
 EOF
 
-# Enabling script execution permission
-#chmod +x $INSTALL_DIR/start-hytale.sh
-
 # Enabling execution permission official Hytal Start.sh script
 chmod +x $INSTALL_DIR/start.sh
-
-# Checking if start script was created before enabling hytale service
-#if [[ ! -x "$INSTALL_DIR/start-hytale.sh" ]]; then
-#  echo "Error: start script is missing or not executable" >&2
-#  exit 1
-#fi
 
 # Writing Hytale Systemd Service
 sudo tee /etc/systemd/system/hytale.service > /dev/null <<EOF
