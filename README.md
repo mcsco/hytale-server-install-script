@@ -1,7 +1,7 @@
-# Hytale Debian 13 Server Installer
+# Hytale Server Installer
 
 Automated installation script for running a **Hytale dedicated server**
-on **Debian 13** using:
+on **Debian 13** OR **Ubuntu 24.04** using:
 
 -   Java 25 (Temurin / Adoptium)
 -   systemd service
@@ -78,14 +78,17 @@ Recommended for:
 ------------------------------------------------------------------------
 # Requirements
 
--   Debian 13 (Trixie)
+-   Debian 13 (Trixie) or Ubuntu 24.04 Server
 -   sudo privileges
 -   internet access
+-   2 or more CPU cores
+-   4 to 8 GB of RAM
 
 Tested on:
 
 -   fresh Debian 13 VM
--   minimal Debian installs
+-   fresh Ubuntu 24.04 server VM
+-   minimal Debian & Ubuntu installs
 
 ------------------------------------------------------------------------
 
@@ -94,7 +97,7 @@ Tested on:
 Clone repository:
 
 ``` bash
-git clone https://github.com/YOURNAME/hytale-server-installer.git
+git clone https://github.com/mcsco/hytale-server-install-script.git
 cd hytale-server-installer
 ```
 
@@ -189,12 +192,13 @@ tmux ls
 ------------------------------------------------------------------------
 # Notes
 
+-   After Server Reboot, Hytale re-authentication might be required
 -   Java 25 is required for current Hytale server builds
 -   tmux allows interactive command execution without stopping the
     service
 -   systemd ensures server starts automatically on boot
 -   installer cleans temporary files automatically
--   script designed for fresh Debian installs but works on existing
+-   script designed for fresh Debian or Ubuntu installs but works on existing
     systems
 
 ------------------------------------------------------------------------
