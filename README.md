@@ -97,7 +97,7 @@ Tested on:
 Clone repository:
 
 ``` bash
-git clone https://github.com/mcsco/hytale-server-install-script.git
+git clone https://github.com/mcsco/hytale-server-installer.git
 cd hytale-server-installer
 ```
 
